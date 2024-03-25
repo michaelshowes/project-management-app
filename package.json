@@ -6,14 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "generate": "drizzle-kit generate:pg",
-    "push": "drizzle-kit push:pg",
-    "migrate": "drizzle-kit generate:pg && drizzle-kit push:pg",
-    "introspect": "drizzle-kit introspect:pg"
+    "lint": "next lint"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
+    "@prisma/client": "^5.11.0",
     "@radix-ui/react-accordion": "^1.1.2",
     "@radix-ui/react-alert-dialog": "^1.0.5",
     "@radix-ui/react-aspect-ratio": "^1.0.3",
@@ -51,7 +48,6 @@
     "cmdk": "^1.0.0",
     "date-fns": "^3.6.0",
     "dotenv": "^16.3.1",
-    "drizzle-orm": "^0.30.4",
     "embla-carousel-react": "^8.0.0",
     "eslint": "^8",
     "eslint-config-next": "14.1.4",
@@ -63,6 +59,7 @@
     "postcss": "^8",
     "prettier": "^3.1.1",
     "prettier-plugin-tailwindcss": "^0.5.9",
+    "prisma": "^5.11.0",
     "react": "18.2.0",
     "react-day-picker": "^8.10.0",
     "react-dom": "18.2.0",
@@ -81,7 +78,6 @@
   "devDependencies": {
     "@hookform/devtools": "^4.3.1",
     "@svgr/webpack": "^8.1.0",
-    "@types/pg": "^8.10.9",
-    "drizzle-kit": "^0.20.8"
+    "@types/pg": "^8.10.9"
   }
 }
