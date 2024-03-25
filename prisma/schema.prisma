@@ -1,0 +1,129 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  OWNER
+  ADMIN
+  MANAGER
+  STANDARD
+  CLIENT
+}
+
+model User {
+  id              String         @id @default(uuid())
+  email           String         @unique
+  firstName       String
+  lastName        String
+  middleInitial   String?
+  role            Role           @default(STANDARD)
+  phone           String?
+  position        String?
+  profileImageUrl String?
+  birthday        DateTime?
+  companyId       String
+  company         Company        @relation(fields: [companyId], references: [id])
+  team            Team[]
+  tasks           Task[]
+  notifications   Notification[]
+  permissions     Permission[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Company {
+  id          String    @id @default(uuid())
+  name        String
+  description String?
+  address     String?
+  city        String?
+  state       String?
+  zip         String?
+  users       User[]
+  teams       Team[]
+  Projects    Project[]
+  tasks       Task[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Team {
+  id          String    @id @default(uuid())
+  name        String
+  description String?
+  companyId   String
+  company     Company   @relation(fields: [companyId], references: [id])
+  users       User[]
+  projects    Project[]
+  tasks       Task[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Project {
+  id          String  @id @default(uuid())
+  name        String
+  description String?
+  companyId   String
+  company     Company @relation(fields: [companyId], references: [id])
+  teamId      String
+  team        Team    @relation(fields: [teamId], references: [id])
+  tasks       Task[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Task {
+  id          String    @id @default(uuid())
+  name        String
+  description String?
+  projectId   String
+  project     Project   @relation(fields: [projectId], references: [id])
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+  teamId      String
+  team        Team      @relation(fields: [teamId], references: [id])
+  companyId   String
+  company     Company   @relation(fields: [companyId], references: [id])
+  dueDate     DateTime?
+  completed   Boolean   @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Notification {
+  id      String  @id @default(uuid())
+  userId  String
+  user    User    @relation(fields: [userId], references: [id])
+  message String
+  read    Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Permission {
+  id     String @id @default(uuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+  role   Role
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
